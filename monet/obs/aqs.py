@@ -11,7 +11,7 @@ import dask
 import dask.dataframe as dd
 import pandas as pd
 import requests
-from numpy import arange, array
+from numpy import arange, array, unique
 
 from .epa_util import read_monitor_file
 
@@ -81,7 +81,7 @@ class AQS(object):
             'time_local', 'time', 'siteid', 'latitude', 'longitude', 'obs',
             'units', 'variable'
         ]
-        self.df = pd.DatFrame()  # hourly dataframe
+        self.df = pd.DataFrame()  # hourly dataframe
         self.monitor_file = inspect.getfile(
             self.__class__)[:-13] + '/data/monitoring_site_locations.dat'
         self.monitor_df = None
@@ -218,7 +218,7 @@ class AQS(object):
             Description of returned object.
 
         """
-        years = pd.DatetimeIndex(dates).year.unique().astype(str)
+        years = unique(pd.DatetimeIndex(dates).year).astype(str)
         urls = []
         fnames = []
         for i in params:

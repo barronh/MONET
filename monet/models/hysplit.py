@@ -373,7 +373,7 @@ class ModelBin(object):
                         concframe['levels'] = lev_name
                         concframe['time'] = pdate1
                         if verbose:
-                            print pdate1
+                            print(pdate1)
                         concframe.set_index(['time', 'levels', 'longitude', 'latitude'], inplace=True)
                         concframe.rename(columns={'conc': col_name}, inplace=True)
                         dset = xr.Dataset.from_dataframe(concframe)
@@ -397,7 +397,7 @@ class ModelBin(object):
         # END OF Loop to go through each sampling time
         self.dset.attrs = atthash
         if verbose:
-            print self.dset
+            print(self.dset)
 
         if iii == 0:
             print('Warning: ModelBin class _readfile method: no data in the date range found')

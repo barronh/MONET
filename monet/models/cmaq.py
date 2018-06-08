@@ -17,6 +17,7 @@ ProgressBar().register()
 
 class CMAQ(BaseModel):
     def __init__(self):
+        self.grid = None
         BaseModel.__init__(self)
         self.objtype = 'CMAQ'
         self.dust_pm25 = array([
@@ -81,13 +82,13 @@ class CMAQ(BaseModel):
         if idims == 2:
             tflag1 = array(self.dset['TFLAG'][:, 0], dtype='|S7')
             tflag2 = array(
-                old_div(self.dset['TFLAG'][:, 1], 10000), dtype='|S6')
+                self.dset['TFLAG'][:, 1] // 10000, dtype='|S6')
         else:
             tflag1 = array(self.dset['TFLAG'][:, 0, 0], dtype='|S7')
             tflag2 = array(
-                old_div(self.dset['TFLAG'][:, 0, 1], 10000), dtype='|S6')
+                self.dset['TFLAG'][:, 0, 1] // 10000, dtype='|S6')
         date = pd.to_datetime(
-            [i + j.zfill(2) for i, j in zip(tflag1, tflag2)], format='%Y%j%H')
+            [(i + j.zfill(2)).decode() for i, j in zip(tflag1, tflag2)], format='%Y%j%H')
         indexdates = pd.Series(date).drop_duplicates(keep='last').index.values
         self.dset = self.dset.isel(time=indexdates)
         self.dset['time'] = date[indexdates]

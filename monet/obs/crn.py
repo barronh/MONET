@@ -116,7 +116,10 @@ import inspect
 import os
 from builtins import object, zip
 from datetime import datetime
-from urllib2 import HTTPError
+try:
+    from urllib2 import HTTPError
+except ImportError:
+    from urllib.error import HTTPError
 
 import pandas as pd
 from future import standard_library

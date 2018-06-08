@@ -1,8 +1,7 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-import taylordiagram as td
-from colorbars import colorbar_index
+from .colorbars import colorbar_index
 
 from ..util import mystats
 
@@ -49,7 +48,7 @@ def spatial(modelvar, **kwargs):
             f, ax = plt.subplots(1, 1, figsize=(11, 6), frameon=False)
             kwargs['ax'] = ax
     except:
-        print 'woops'
+        print('woops')
     ax = modelvar.plot(**kwargs)
     return ax
 
@@ -274,7 +273,7 @@ def kdeplot(df, title=None, label=None, ax=None, **kwargs):
     sns.set_style('ticks')
 
     if ax is None:
-        print 'here'
+        print('here')
         f, ax = plt.subplots(figsize=(11, 6), frameon=False)
         sns.despine()
 
@@ -306,14 +305,15 @@ def scatter(df, x=None, y=None, title=None, label=None, ax=None, **kwargs):
 
     if ax is None:
         f, ax = plt.subplots(figsize=(8, 6), frameon=False)
-    print (df.head())
-    print (x, y)
+    print(df.head())
+    print(x, y)
     ax = sns.regplot(data=df, x=x, y=y, label=label, **kwargs)
     plt.title(title)
     return ax
 
 
 def taylordiagram(df, marker='o', col1='obs', col2='model', label='CMAQ', addon=False, dia=None):
+    from . import taylordiagram as td
     from numpy import corrcoef
 
     df = df.drop_duplicates().dropna(subset=[col1, col2])
@@ -335,9 +335,9 @@ def taylordiagram(df, marker='o', col1='obs', col2='model', label='CMAQ', addon=
         plt.tight_layout()
 
     elif not addon and dia is not None:
-        print 'Do you want to add this on? if so please turn the addon keyword to True'
+        print('Do you want to add this on? if so please turn the addon keyword to True')
     elif addon and dia is None:
-        print 'Please pass the previous Taylor Diagram Instance with dia keyword...'
+        print('Please pass the previous Taylor Diagram Instance with dia keyword...')
     else:
         cc = corrcoef(df.Obs.values, df.CMAQ.values)[0, 1]
         dia.add_sample(df.CMAQ.std(), cc, marker=marker, zorder=9, ls=None, label=label)
